@@ -54,6 +54,29 @@ const num1 = zkAppInstance.num.get();
 
 console.log(num1.toString());
 
+try {
+  const txn2 = await Mina.transaction(senderAccount, () => {
+    zkAppInstance.update(Field(75));
+  });
+  await txn2.prove();
+  await txn2.sign([senderKey]).send();
+} catch (error: any) {
+  console.log(error.message);
+}
+
+const num2 = zkAppInstance.num.get();
+console.log(num2.toString());
+
+const txn3 = await Mina.transaction(senderAccount, () => {
+  zkAppInstance.update(Field(81));
+});
+
+await txn3.prove();
+await txn3.sign([senderKey]).send();
+
+const num3 = zkAppInstance.num.get();
+console.log(num3.toString());
+
 console.log('Shutting down');
 
 await shutdown();
