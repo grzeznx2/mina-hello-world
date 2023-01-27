@@ -42,6 +42,18 @@ const num0 = zkAppInstance.num.get();
 
 console.log('state after init:', num0.toString());
 // ----------------------------------------------------
+
+const txn1 = await Mina.transaction(senderAccount, () => {
+  zkAppInstance.update(Field(9));
+});
+
+await txn1.prove();
+await txn1.sign([senderKey]).send();
+
+const num1 = zkAppInstance.num.get();
+
+console.log(num1.toString());
+
 console.log('Shutting down');
 
 await shutdown();
